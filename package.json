@@ -4,7 +4,8 @@
   "description": "Express Backend for the Johnston Home Hub",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "author": "@wijohnst",
   "license": "ISC",
