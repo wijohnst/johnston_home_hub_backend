@@ -14,6 +14,7 @@ const database = mongoose.connection;
 
 const petsRouter = require('./routes/Pets/pets');
 const feederRouter = require('./routes/Feeder/feeder');
+const choreTrackerRouter = require('./routes/ChoreTracker/choreTracker.route');
 
 database.on('error', (error) => {
 	console.log('DB Connection Error', error);
@@ -27,8 +28,9 @@ app.use(cors());
 app.use(express.json());
 
 //ROUTES
-app.use('/pets', petsRouter)
-app.use('/feeder', feederRouter)
+app.use('/pets', petsRouter);
+app.use('/feeder', feederRouter);
+app.use('/chores', choreTrackerRouter);
 
 app.listen(port, () => {
 	console.log(`Johnston Home Hub is listening on port ${port}`);

@@ -8,7 +8,7 @@ const { Pet } = require('../../models/Pet/Pet')
 const [ SuccessMessagesEnum ] = require('../../contants');
 
 router.get('/feederData', async(req, res) => {
-	console.log('Fetting feeder data from `feeder/feederData`...')
+	console.log('Fetching feeder data from `feeder/feederData`...');
 	try{
 		const allPets = await Pet.find();
 		let [ targetFeedStatus ]= await FeedStatus.find({ date: fns.format(new Date(), 'MM/dd/yyyy') });
