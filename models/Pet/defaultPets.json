@@ -1,20 +1,20 @@
 [
-  {
-    "_id": "000-1",
-    "name": "Opal",
-    "species": "DOG",
-    "iconId": "brown-dog"
-  },
-  {
-    "_id": "000-2",
-    "name": "Rudy",
-    "species": "CAT",
-    "iconId": "grey-car"
-  },
-  {
-    "_id": "000-3",
-    "name": "Bella",
-    "species": "CAT",
-    "iconId": "torty-cat"
-  }
+    {
+        "_id": "000-1",
+        "name": "Opal",
+        "species": "DOG",
+        "iconId": "brown-dog"
+    },
+    {
+        "_id": "000-2",
+        "name": "Rudy",
+        "species": "CAT",
+        "iconId": "grey-car"
+    },
+    {
+        "_id": "000-3",
+        "name": "Bella",
+        "species": "CAT",
+        "iconId": "torty-cat"
+    }
 ]

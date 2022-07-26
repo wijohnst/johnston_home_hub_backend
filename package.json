@@ -1,22 +1,29 @@
 {
-  "name": "jhh-backend",
-  "version": "1.0.0",
-  "description": "Express Backend for the Johnston Home Hub",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
-  },
-  "author": "@wijohnst",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "date-fns": "^2.29.1",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
-    "mongoose": "^6.4.5"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.19"
-  }
+    "name": "jhh-backend",
+    "version": "1.0.0",
+    "description": "Express Backend for the Johnston Home Hub",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon index.js",
+        "format:check": "prettier --check .",
+        "format:write": "prettier --write .",
+        "lint:check": "eslint .",
+        "lint:fix": "eslint --fix ."
+    },
+    "author": "@wijohnst",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "date-fns": "^2.29.1",
+        "dotenv": "^16.0.1",
+        "express": "^4.18.1",
+        "mongoose": "^6.4.5"
+    },
+    "devDependencies": {
+        "eslint": "^8.20.0",
+        "eslint-config-prettier": "^8.5.0",
+        "nodemon": "^2.0.19",
+        "prettier": "^2.7.1"
+    }
 }
