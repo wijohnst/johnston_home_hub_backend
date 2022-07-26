@@ -8,7 +8,7 @@ const { Pet } = require('../../models/Pet/Pet')
 const [ SuccessMessagesEnum ] = require('../../contants');
 
 router.get('/feederData', async(req, res) => {
-	console.log('Fetting feeder data from `pets/feeder`...')
+	console.log('Fetting feeder data from `feeder/feederData`...')
 	try{
 		const allPets = await Pet.find();
 		let [ targetFeedStatus ]= await FeedStatus.find({ date: fns.format(new Date(), 'MM/dd/yyyy') });
@@ -38,8 +38,26 @@ router.get('/feederData', async(req, res) => {
 			message: error,
 		})
 	}finally{
-		console.log('GET: pets/feeder completed')
+		console.log('GET: feeder/feederData completed...')
 	}
 });
+
+router.patch('/feederData', async(req, res) => {
+	console.log('Updating feeder data from `feeder/feederData`...')
+	try{
+		const { targetDate, targetMeal, petsToUpdate } = req.body;
+		const updatedFeedStatus = await FeedStatus.findOneAndUpdate({ date: targetDate}, { [targetMeal] : petsToUpdate}, { new: true});
+		
+		res.status(200).json({
+			status: 200,
+			message: SuccessMessagesEnum.FEEDER_DATA_PATCHED,
+			data: updatedFeedStatus,
+		})
+	}catch(error){
+		console.error(error)
+	}finally{
+		console.log('PATCH: feeder/feederData completed...')
+	}
+})
 
 module.exports = router;
