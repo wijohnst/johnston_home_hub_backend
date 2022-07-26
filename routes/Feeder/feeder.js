@@ -1,0 +1,45 @@
+const express = require('express');
+const fns = require('date-fns');
+
+const router = express.Router();
+
+const { FeedStatus }  = require('../../models/FeederData/FeederData');
+const { Pet } = require('../../models/Pet/Pet')
+const [ SuccessMessagesEnum ] = require('../../contants');
+
+router.get('/feederData', async(req, res) => {
+	console.log('Fetting feeder data from `pets/feeder`...')
+	try{
+		const allPets = await Pet.find();
+		let [ targetFeedStatus ]= await FeedStatus.find({ date: fns.format(new Date(), 'MM/dd/yyyy') });
+
+		if(!targetFeedStatus){
+			console.log('Generating new feed status...')
+			targetFeedStatus = new FeedStatus({
+				date: fns.format(new Date(), 'MM/dd/yyyy'),
+				breakfst: [],
+				dinner: [],
+			});
+			await targetFeedStatus.save();
+		}
+
+		const feederData = {
+			pets: allPets,
+			feedStatus : targetFeedStatus, 
+		}
+		res.status(200).json({
+			status: 200,
+			message: SuccessMessagesEnum.FEEDER_DATA_FETCHED,
+			data: feederData,
+		})
+	}catch(error){
+		res.status(400).json({
+			status: 400,
+			message: error,
+		})
+	}finally{
+		console.log('GET: pets/feeder completed')
+	}
+});
+
+module.exports = router;
