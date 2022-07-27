@@ -10,6 +10,7 @@ const port = 3001
 mongoose.connect(mongoString)
 const database = mongoose.connection
 
+const choreTrackerRouter = require('./routes/ChoreTracker/choreTracker.route')
 const petsRouter = require('./routes/Pets/pets')
 const feederRouter = require('./routes/Feeder/feeder')
 
@@ -25,8 +26,9 @@ app.use(cors())
 app.use(express.json())
 
 //ROUTES
-app.use('/pets', petsRouter)
-app.use('/feeder', feederRouter)
+app.use('/pets', petsRouter);
+app.use('/feeder', feederRouter);
+app.use('/chores', choreTrackerRouter);
 
 app.listen(port, () => {
     console.log(`Johnston Home Hub is listening on port ${port}`)
