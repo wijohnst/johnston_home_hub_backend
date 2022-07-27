@@ -48,4 +48,22 @@ router.post('/', async(req, res) => {
 	}
 })
 
+// eslint-disable-next-line no-unused-vars
+router.patch('/', async(req, res) => {
+	console.log('Updating chore completion date...')
+	const { choreId } = req.body;
+	try {
+		const targetChore = await Chore.findOneAndUpdate({_id: choreId}, {lastCompleted : new Date()});
+		await targetChore.save();
+		res.status(200).json({
+			status: 200,
+			message: SuccessMessagesEnum.CHORE_UPDATED,
+		})
+	} catch (error) {
+		console.error(error)
+	}finally{
+		console.log('PATCH: /chores/ completed...')
+	}
+})
+
 module.exports = router;
