@@ -72,8 +72,6 @@ router.patch('/', async(req,res) => {
 	const { _id, item } = req.body;
 	try {
 		const targetList = await ShoppingList.findById(_id)
-		// console.log(targetList.items)
-		console.log(item)
 		targetList.items.push(item);
 		await targetList.save();
 
