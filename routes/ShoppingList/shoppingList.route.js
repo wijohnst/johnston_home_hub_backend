@@ -69,6 +69,7 @@ router.post('/', async(req, res) => {
 
 router.patch('/', async(req,res) => {
 	console.log('Updating shopping list...')
+	// _id is the shoppingList id, not the item to be added
 	const { _id, item } = req.body;
 	try {
 		const targetList = await ShoppingList.findById(_id)
