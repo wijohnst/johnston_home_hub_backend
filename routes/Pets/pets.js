@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { Pet } = require('../../models/Pet/Pet')
-const [SuccessMessagesEnum] = require('../../contants')
+const [SuccessMessagesEnum] = require('../../constants')
 
 router.get('/all', async (req, res) => {
     console.log('Fetching pets from `pets/all`...')

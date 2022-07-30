@@ -5,8 +5,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const { ItemSchema, GroceryItemSchema, OnlineItemSchema } = require('./item.model');
-
 const { addNewStoresMiddleware } = require('../utils/shoppingList.utils');
 
 const ListCategoriesEnum = Object.freeze({
@@ -21,17 +19,8 @@ const ShoppingListSchema = new Schema({
 	_id: Schema.ObjectId,
 }, options)
 
-const GroceryListSchema = new Schema({
-	items: [GroceryItemSchema],
-})
-
-GroceryListSchema.post('save', async function(doc, next) {
-	await addNewStoresMiddleware(doc);
-	next();
-})
-
 const HardwareListSchema = new Schema({
-	items: [ItemSchema]
+	items: [{type : Schema.Types.ObjectId, ref: 'Item'}]
 })
 
 HardwareListSchema.post('save', async function(doc, next) {
@@ -39,12 +28,22 @@ HardwareListSchema.post('save', async function(doc, next) {
 	next();
 })
 
+const GroceryListSchema = new Schema({
+	items: [{ type: Schema.Types.ObjectId, ref: 'GroceryItem' }],
+})
+
+GroceryListSchema.post('save', async function(doc, next) {
+	// await addNewStoresMiddleware(doc);
+	next();
+})
+
+
 const OnlineListSchema = new Schema({
-	items: [OnlineItemSchema],
+	items: [{type: Schema.Types.ObjectId, ref: 'OnlineItem'}],
 })
 
 OnlineListSchema.post('save', async function(doc, next) {
-	await addNewStoresMiddleware(doc);
+	// await addNewStoresMiddleware(doc);
 	next();
 })
 

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-const [ SuccessMessagesEnum ] = require('../../contants');
+const [ SuccessMessagesEnum ] = require('../../constants');
 
 const { Chore }  = require('../../models/Chore/chore')
 

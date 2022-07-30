@@ -5,28 +5,33 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const { ListCategoriesEnum } = require('../../models/ShoppingList/shoppingList.model');
+
 const ItemSchema = new Schema({
 	_id: Schema.ObjectId,
-	store: { type: String },
 	name: { type: String, required: true},
-	quantity: { type: String, default: "?"},
+	store: { type: Schema.Types.ObjectId, ref: 'Store' },
+	quantity: { type: String, default: "Unknown Quantity"},
+	category: { type: String, default: "Non-Categorized"}
 });
 
 const GroceryItemSchema = new Schema({
 	_id: Schema.ObjectId,
-	name: { type: String, required: true},
-	store: { type: String },
-	aisle: { type: String, deafult: "Miscelaneous"},
-	quantity: { type: String, default: "?"},
+	name: { type: String },
+	store: { type: Schema.Types.ObjectId, ref: 'Store' },
+	aisle: { type: Schema.Types.ObjectId, ref: "Aisle"},
+	quantity: { type: String, default: "Not Specified"},
+	category: { type: String, default: ListCategoriesEnum.GROCERY}
 })
 
 
 const OnlineItemSchema = new Schema({
 	_id: Schema.ObjectId,
-	store: { type: String },
 	name: { type: String, required: true},
-	url: { type: String, default: "No link provided"},
+	store: { type: Schema.Types.ObjectId, ref: 'Store' },	
 	quantity: { type: String, default: "?"},
+	url: { type: String, default: "No link provided"},
+	category: { type: String, default: ListCategoriesEnum.ONLINE}
 });
 
 const Item = mongoose.model('item', ItemSchema);
