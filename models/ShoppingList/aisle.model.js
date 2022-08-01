@@ -21,7 +21,5 @@ const AisleSchema = new Schema({
 	aisle: { type : String, default: "Miscelaneous"}
 });
 
-const Aisle = mongoose.model('aisle', AisleSchema);
-
-module.exports.Aisle = Aisle;
+module.exports.AisleSchema = AisleSchema;
 

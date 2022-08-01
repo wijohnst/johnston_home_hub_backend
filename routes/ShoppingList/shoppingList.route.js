@@ -2,27 +2,40 @@
 const express = require('express');
 const mongoose = require('mongoose');
 		
-const [ SuccessMessagesEnum ] = require('../../constants');
+const { SuccessMessagesEnum, ListCategoriesEnum } = require('../../constants');
 
 const router = express.Router();
 
-const { ListCategoriesEnum, GroceryList, HardwareList, OnlineList, ShoppingList } = require('../../models/ShoppingList/shoppingList.model');
+const { GroceryList, HardwareList, OnlineList, ShoppingList, Store } = require('../../models/ShoppingList/shoppingList.model');
 
 const { Item ,GroceryItem, OnlineItem } = require('../../models/ShoppingList/item.model');
 
 const { Aisle } = require('../../models/ShoppingList/aisle.model');
 
-const { addNewStore, getItemInfo } = require('./shoppingList.route.utils');
+const { addNewStore, getItemInfo, getNewShoppingListByCategory, getNewItemByCategory } = require('./shoppingList.route.utils');
 
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
 	console.log('Getting all shopping lists...')
 	try {
-		const shoppingLists = await ShoppingList.find();
-		res.status(200).json({
-			status: 200,
-			message: SuccessMessagesEnum.SHOPPING_LISTS_FETCHED,
-			shoppingLists,
-		})
+		const shoppingLists = await ShoppingList.find().populate(
+				{
+					path: 'items', populate : [
+						{ path: 'store', model: 'Store'}, 
+						{ path: 'aisle', model: 'Aisle', strictPopulate: false},
+					],
+				},
+			).exec(function (error, shoppingLists){
+			if(error){
+				console.error('Error from populate method chain :', error)
+			}else{				
+				res.status(200).json({
+					status: 200,
+					message: SuccessMessagesEnum.SHOPPING_LISTS_FETCHED,
+					shoppingLists,
+				})
+			}
+		});
+		
 	} catch (error) {
 		console.error(error)	
 	}finally{
@@ -34,29 +47,8 @@ router.post('/', async(req, res) => {
 	console.log('Creating a new shopping list...');
 	const { items, category } = req.body;
 	try {
-		let newList; 
-		switch (category) {
-			case ListCategoriesEnum.GROCERY:
-				newList = new GroceryList({
-					_id: mongoose.Types.ObjectId(),
-					category: ListCategoriesEnum.GROCERY,
-				})
-				break;
-			case ListCategoriesEnum.HARDWARE:
-				newList = new HardwareList({
-					_id: mongoose.Types.ObjectId(),
-					category: ListCategoriesEnum.HARDWARE,
-				})
-				break;
-				case ListCategoriesEnum.ONLINE:
-					newList = new OnlineList({
-						_id: mongoose.Types.ObjectId(),
-						category: ListCategoriesEnum.ONLINE,
-					})
-					break;
-			default:
-				throw('Non-known list category provided.');
-		}
+		const newList = getNewShoppingListByCategory (category);
+
 		await newList.save(function(err, list) {
 			if (err) return console.error(err); 
 
@@ -189,11 +181,18 @@ router.post('/', async(req, res) => {
 
 router.patch('/', async(req,res) => {
 	console.log('Updating shopping list...')
-	// _id is the shoppingList id, not the item to be added
-	const { _id, item } = req.body;
+	const { _shoppingListId, item } = req.body;
+	const { isItemInDb } = getItemInfo(item);
+	
+	const newDbItem = getNewItemByCategory(item.category, item);
+
+	if(!isItemInDb){
+		await newDbItem.save();
+	}
+
 	try {
-		const targetList = await ShoppingList.findById(_id)
-		targetList.items.push(item);
+		const targetList = await ShoppingList.findById(_shoppingListId)
+		targetList.items.push(item._id ?? newDbItem._id);
 		await targetList.save();
 
 		res.status(200).json({

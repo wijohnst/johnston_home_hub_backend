@@ -9,4 +9,11 @@ const SuccessMessagesEnum = Object.freeze({
 		SHOPPING_LIST_UPDATED: 'Shopping List updated successfully.',
 })
 
-module.exports = [SuccessMessagesEnum]
+const ListCategoriesEnum = Object.freeze({
+	GROCERY : "Grocery",
+	HARDWARE: "Hardware",
+	ONLINE : "Online",
+});
+
+module.exports.SuccessMessagesEnum = SuccessMessagesEnum;
+module.exports.ListCategoriesEnum = ListCategoriesEnum;

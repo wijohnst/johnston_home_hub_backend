@@ -5,7 +5,7 @@ const router = express.Router()
 
 const { FeedStatus } = require('../../models/FeederData/FeederData')
 const { Pet } = require('../../models/Pet/Pet')
-const [SuccessMessagesEnum] = require('../../constants')
+const {SuccessMessagesEnum} = require('../../constants')
 
 router.get('/feederData', async (req, res) => {
     console.log('Fetting feeder data from `feeder/feederData`...')

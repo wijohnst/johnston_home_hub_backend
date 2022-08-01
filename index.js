@@ -9,7 +9,6 @@ const port = 3001
 
 mongoose.connect(mongoString)
 const database = mongoose.connection
-
 const choreTrackerRouter = require('./routes/ChoreTracker/choreTracker.route')
 const petsRouter = require('./routes/Pets/pets')
 const feederRouter = require('./routes/Feeder/feeder')

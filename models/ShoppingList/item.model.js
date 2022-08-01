@@ -5,7 +5,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const { ListCategoriesEnum } = require('../../models/ShoppingList/shoppingList.model');
+const  { ListCategoriesEnum } = require('../../constants'); 
 
 const ItemSchema = new Schema({
 	_id: Schema.ObjectId,
@@ -34,14 +34,8 @@ const OnlineItemSchema = new Schema({
 	category: { type: String, default: ListCategoriesEnum.ONLINE}
 });
 
-const Item = mongoose.model('item', ItemSchema);
-const GroceryItem = mongoose.model('groceryItem', GroceryItemSchema);
-const OnlineItem = mongoose.model('onlineItem', OnlineItemSchema);
 
 module.exports.ItemSchema = ItemSchema;
 module.exports.GroceryItemSchema = GroceryItemSchema;
 module.exports.OnlineItemSchema = OnlineItemSchema;
 
-module.exports.Item = Item;
-module.exports.GroceryItem = GroceryItem;
-module.exports.OnlineItem = OnlineItem;

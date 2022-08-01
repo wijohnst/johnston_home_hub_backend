@@ -13,4 +13,4 @@ const StoreSchema = new Schema({
 	category: { type: String, default: 'Unassigned'},
 });
 
-module.exports.Store = mongoose.model('store', StoreSchema);
+module.exports.StoreSchema = StoreSchema;
