@@ -11,8 +11,6 @@ const { ItemSchema, GroceryItemSchema, OnlineItemSchema } = require('./item.mode
 const { StoreSchema } = require('./store.model');
 const { AisleSchema } = require('./aisle.model');
 
-const { addNewStoresMiddleware } = require('../utils/shoppingList.utils');
-
 const options = { discriminatorKey: 'category'};
 
 const ShoppingListSchema = new Schema({
@@ -24,7 +22,6 @@ const HardwareListSchema = new Schema({
 })
 
 HardwareListSchema.post('save', async function(doc, next) {
-	await addNewStoresMiddleware(doc);
 	next();
 })
 
@@ -33,7 +30,6 @@ const GroceryListSchema = new Schema({
 })
 
 GroceryListSchema.post('save', async function(doc, next) {
-	// await addNewStoresMiddleware(doc);
 	next();
 })
 
@@ -43,7 +39,6 @@ const OnlineListSchema = new Schema({
 })
 
 OnlineListSchema.post('save', async function(doc, next) {
-	// await addNewStoresMiddleware(doc);
 	next();
 })
 

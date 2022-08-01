@@ -6,13 +6,11 @@ const { SuccessMessagesEnum, ListCategoriesEnum } = require('../../constants');
 
 const router = express.Router();
 
-const { GroceryList, HardwareList, OnlineList, ShoppingList, Store } = require('../../models/ShoppingList/shoppingList.model');
+const { GroceryList, HardwareList, OnlineList, ShoppingList, Store, Aisle } = require('../../models/ShoppingList/shoppingList.model');
 
-const { Item ,GroceryItem, OnlineItem } = require('../../models/ShoppingList/item.model');
+const { Item ,GroceryItem, OnlineItem } = require('../../models/ShoppingList/item.model');;
 
-const { Aisle } = require('../../models/ShoppingList/aisle.model');
-
-const { addNewStore, getItemInfo, getNewShoppingListByCategory, getNewItemByCategory } = require('./shoppingList.route.utils');
+const { addNewStore, getItemInfo, getNewShoppingListByCategory, getNewItemByCategory, addNewAisle } = require('./shoppingList.route.utils');
 
 router.get('/', async (req, res) => {
 	console.log('Getting all shopping lists...')
@@ -39,7 +37,23 @@ router.get('/', async (req, res) => {
 	} catch (error) {
 		console.error(error)	
 	}finally{
-		console.log('GET: /shoppingLists/ completed...')
+		console.log('GET: /shoppingLists/ completed...');
+	}
+})
+
+router.get('/aisles', async (req, res) => {
+	console.log('Getting aisles...');
+	try {
+		const aisles = await Aisle.find();
+		res.status(200).json({
+			status: 200,
+			message: SuccessMessagesEnum.AISLES_FETCHED,
+			aisles,
+		})
+	}catch(error){
+		console.error(error);
+	}finally{
+		console.log('GET: /shoppingLists/aisles completed...');
 	}
 })
 
@@ -182,11 +196,26 @@ router.post('/', async(req, res) => {
 router.patch('/', async(req,res) => {
 	console.log('Updating shopping list...')
 	const { _shoppingListId, item } = req.body;
-	const { isItemInDb } = getItemInfo(item);
+	const { isItemInDb, hasDbStore, hasDbAisle } = getItemInfo(item);
+
+	const isGroceryItem = item.category === ListCategoriesEnum.GROCERY;
+	
+	
+	const newStoreId = !hasDbStore ? mongoose.Types.ObjectId() : null;
+	if(!hasDbStore){
+		await addNewStore(newStoreId, item.store.name, item.category);
+	}
+
+	const newAisleId = !hasDbAisle ? mongoose.Types.ObjectId() : null;
+
+	if(!hasDbAisle && isGroceryItem){
+		await addNewAisle(newAisleId, item.aisle.aisle);
+	}
 	
 	const newDbItem = getNewItemByCategory(item.category, item);
-
 	if(!isItemInDb){
+		newDbItem.store = hasDbStore ? item.store._id : newStoreId;
+		newDbItem.aisle = hasDbAisle ? item.aisle._id : newAisleId;
 		await newDbItem.save();
 	}
 

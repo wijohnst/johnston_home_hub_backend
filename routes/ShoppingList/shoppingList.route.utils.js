@@ -5,8 +5,7 @@
 
 const mongoose = require('mongoose');
 
-const { Store } = require('../../models/ShoppingList/store.model');
-const { GroceryList, OnlineList, HardwareList, GroceryItem, Item, OnlineItem } = require('../../models/ShoppingList/shoppingList.model');
+const { GroceryList, OnlineList, HardwareList, GroceryItem, Item, OnlineItem, Aisle, Store } = require('../../models/ShoppingList/shoppingList.model');
 
 const { ListCategoriesEnum } = require('../../constants');
 
@@ -31,6 +30,25 @@ const addNewStore = async (newStoreId, storeName, category) => {
 	});
 	
 	console.log(`${storeName} Store created successfully.`)
+}
+
+/**
+ * Creates a new Aisle document
+ * 
+ * @param {string} newAisleId 
+ * @param {string} aisleName 
+ */
+const addNewAisle = async (newAisleId, aisleName) => {
+	console.log('Creating new aisle...');
+
+	const newAisle = new Aisle({
+		_id: newAisleId,
+		aisle: aisleName,
+	});
+
+	await newAisle.save((error) => {
+		error && console.error(error);
+	})
 }
 
 /**
@@ -111,11 +129,12 @@ const getNewItemByCategory = (category, item) => {
 				category,
 			});
 			break;
-		case ListCategoriesEnum.Online:
+		case ListCategoriesEnum.ONLINE:
 			newItem = new OnlineItem({
 				_id: mongoose.Types.ObjectId(),
 				name: item.name,
 				store: item.store._id,
+				quantity: item.quantity,
 				url: item.url,
 				category,
 			});
@@ -128,6 +147,7 @@ const getNewItemByCategory = (category, item) => {
 }
 
 module.exports.addNewStore = addNewStore;
+module.exports.addNewAisle = addNewAisle;
 module.exports.getItemInfo = getItemInfo;
 module.exports.getNewListByCategory = getNewShoppingListByCategory;
 module.exports.getNewItemByCategory = getNewItemByCategory;
