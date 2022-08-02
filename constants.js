@@ -11,7 +11,6 @@ const HTTPMessagesEnum = Object.freeze({
 		LIST_ITEM_DELETED: 'Shopping list item deleted successfully.',
 		STORES_FETCHED: {
 			SUCCESS: 'Stores fetched successfully.',
-			FAILED: 'Fetching stores failed.',
 			FINALLY: 'GET: /shoppingLists/stores completed.'
 		}, 
 });

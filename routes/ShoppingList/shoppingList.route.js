@@ -68,10 +68,6 @@ router.get('/stores', async (req, res) => {
 		})
 	}catch(error){
 		console.error(error);
-		res.status(400).json({
-			status: 400,
-			message: HTTPMessagesEnum.STORES_FETCHED.FAILED,
-		})
 	}finally{
 		console.log(HTTPMessagesEnum.STORES_FETCHED.FINALLY)
 	}
