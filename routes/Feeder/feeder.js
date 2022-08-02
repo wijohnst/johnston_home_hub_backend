@@ -5,7 +5,7 @@ const router = express.Router()
 
 const { FeedStatus } = require('../../models/FeederData/FeederData')
 const { Pet } = require('../../models/Pet/Pet')
-const {SuccessMessagesEnum} = require('../../constants')
+const {HTTPMessagesEnum} = require('../../constants')
 
 router.get('/feederData', async (req, res) => {
     console.log('Fetting feeder data from `feeder/feederData`...')
@@ -31,7 +31,7 @@ router.get('/feederData', async (req, res) => {
         }
         res.status(200).json({
             status: 200,
-            message: SuccessMessagesEnum.FEEDER_DATA_FETCHED,
+            message: HTTPMessagesEnum.FEEDER_DATA_FETCHED,
             data: feederData,
         })
     } catch (error) {
@@ -56,7 +56,7 @@ router.patch('/feederData', async (req, res) => {
 
         res.status(200).json({
             status: 200,
-            message: SuccessMessagesEnum.FEEDER_DATA_PATCHED,
+            message: HTTPMessagesEnum.FEEDER_DATA_PATCHED,
             data: updatedFeedStatus,
         })
     } catch (error) {

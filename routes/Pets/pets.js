@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { Pet } = require('../../models/Pet/Pet')
-const {SuccessMessagesEnum} = require('../../constants')
+const {HTTPMessagesEnum} = require('../../constants')
 
 router.get('/all', async (req, res) => {
     console.log('Fetching pets from `pets/all`...')
@@ -10,7 +10,7 @@ router.get('/all', async (req, res) => {
         const pets = await Pet.find()
         res.status(200).json({
             status: 200,
-            message: SuccessMessagesEnum.PETS_FETCHED,
+            message: HTTPMessagesEnum.PETS_FETCHED,
             data: pets,
         })
     } catch (error) {

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-const { SuccessMessagesEnum } = require('../../constants');
+const { HTTPMessagesEnum } = require('../../constants');
 
 const { Chore }  = require('../../models/Chore/chore')
 
@@ -14,7 +14,7 @@ router.get('/', async(_req, res) => {
 		const chores = await Chore.find();
 		res.status(200).json({
 			status: 200,
-			message: SuccessMessagesEnum.CHORE_DATA_FETCHED,
+			message: HTTPMessagesEnum.CHORE_DATA_FETCHED,
 			data: chores,
 		})
 	}catch(error){
@@ -39,7 +39,7 @@ router.post('/', async(req, res) => {
 		await newChore.save();
 		res.status(200).json({
 			status: 200,
-			message: SuccessMessagesEnum.NEW_CHORE_ADDED,
+			message: HTTPMessagesEnum.NEW_CHORE_ADDED,
 		});
 	}catch(error){
 		console.error(error)
@@ -57,7 +57,7 @@ router.patch('/', async(req, res) => {
 		await targetChore.save();
 		res.status(200).json({
 			status: 200,
-			message: SuccessMessagesEnum.CHORE_UPDATED,
+			message: HTTPMessagesEnum.CHORE_UPDATED,
 		})
 	} catch (error) {
 		console.error(error)

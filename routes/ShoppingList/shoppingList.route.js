@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 		
-const { SuccessMessagesEnum, ListCategoriesEnum } = require('../../constants');
+const { HTTPMessagesEnum, ListCategoriesEnum } = require('../../constants');
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
 			}else{				
 				res.status(200).json({
 					status: 200,
-					message: SuccessMessagesEnum.SHOPPING_LISTS_FETCHED,
+					message: HTTPMessagesEnum.SHOPPING_LISTS_FETCHED,
 					shoppingLists,
 				})
 			}
@@ -47,13 +47,33 @@ router.get('/aisles', async (req, res) => {
 		const aisles = await Aisle.find();
 		res.status(200).json({
 			status: 200,
-			message: SuccessMessagesEnum.AISLES_FETCHED,
+			message: HTTPMessagesEnum.AISLES_FETCHED,
 			aisles,
 		})
 	}catch(error){
 		console.error(error);
 	}finally{
 		console.log('GET: /shoppingLists/aisles completed...');
+	}
+})
+
+router.get('/stores', async (req, res) => {
+	console.log('Getting stores....');
+	try{
+		const stores = await Store.find();
+		res.status(200).json({
+			status: 200,
+			message: HTTPMessagesEnum.STORES_FETCHED.SUCCESS,
+			stores,
+		})
+	}catch(error){
+		console.error(error);
+		res.status(400).json({
+			status: 400,
+			message: HTTPMessagesEnum.STORES_FETCHED.FAILED,
+		})
+	}finally{
+		console.log(HTTPMessagesEnum.STORES_FETCHED.FINALLY)
 	}
 })
 
@@ -184,7 +204,7 @@ router.post('/', async(req, res) => {
 
 		res.status(200).json({
 			status: 200,
-			message: SuccessMessagesEnum.NEW_LIST_ADDED,
+			message: HTTPMessagesEnum.NEW_LIST_ADDED,
 		})
 	} catch (error) {
 		console.error(error)
@@ -226,7 +246,7 @@ router.patch('/', async(req,res) => {
 
 		res.status(200).json({
 			status: 200,
-			message: SuccessMessagesEnum.SHOPPING_LIST_UPDATED,
+			message: HTTPMessagesEnum.SHOPPING_LIST_UPDATED,
 		})
 	} catch (error) {
 		console.error(error)
@@ -249,7 +269,7 @@ router.delete('/', async (req, res) => {
 
 		res.status(200).json({
 			status: 200,
-			message: SuccessMessagesEnum.LIST_ITEM_DELETED,
+			message: HTTPMessagesEnum.LIST_ITEM_DELETED,
 		})
 	}catch(error){
 		console.error(error);

@@ -1,4 +1,4 @@
-const SuccessMessagesEnum = Object.freeze({
+const HTTPMessagesEnum = Object.freeze({
     PETS_FETCHED: 'Pets fetched successfully.',
     FEEDER_DATA_FETCHED: 'Feeder data fetched successfully.',
     FEEDER_DATA_PATCED: 'Feeder data patched successfully.',
@@ -8,8 +8,13 @@ const SuccessMessagesEnum = Object.freeze({
 		SHOPPING_LISTS_FETCHED: 'Shopping Lists fetched successfully.',
 		SHOPPING_LIST_UPDATED: 'Shopping List updated successfully.',
 		AISLES_FETCHED: 'Aisles fetched successfully.',
-		LIST_ITEM_DELETED: 'Shopping list item deleted successfully.'
-})
+		LIST_ITEM_DELETED: 'Shopping list item deleted successfully.',
+		STORES_FETCHED: {
+			SUCCESS: 'Stores fetched successfully.',
+			FAILED: 'Fetching stores failed.',
+			FINALLY: 'GET: /shoppingLists/stores completed.'
+		}, 
+});
 
 const ListCategoriesEnum = Object.freeze({
 	GROCERY : "Grocery",
@@ -17,5 +22,5 @@ const ListCategoriesEnum = Object.freeze({
 	ONLINE : "Online",
 });
 
-module.exports.SuccessMessagesEnum = SuccessMessagesEnum;
+module.exports.HTTPMessagesEnum = HTTPMessagesEnum;
 module.exports.ListCategoriesEnum = ListCategoriesEnum;
