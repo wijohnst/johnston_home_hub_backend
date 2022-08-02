@@ -7,7 +7,8 @@ const SuccessMessagesEnum = Object.freeze({
 		CHORE_UPDATED: 'Chore last completed date updated successfully.',
 		SHOPPING_LISTS_FETCHED: 'Shopping Lists fetched successfully.',
 		SHOPPING_LIST_UPDATED: 'Shopping List updated successfully.',
-		AISLES_FETCHED: 'Aisles fetched successfully.'
+		AISLES_FETCHED: 'Aisles fetched successfully.',
+		LIST_ITEM_DELETED: 'Shopping list item deleted successfully.'
 })
 
 const ListCategoriesEnum = Object.freeze({

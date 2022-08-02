@@ -15,7 +15,7 @@ const { addNewStore, getItemInfo, getNewShoppingListByCategory, getNewItemByCate
 router.get('/', async (req, res) => {
 	console.log('Getting all shopping lists...')
 	try {
-		const shoppingLists = await ShoppingList.find().populate(
+		const shoppingLists = ShoppingList.find().populate(
 				{
 					path: 'items', populate : [
 						{ path: 'store', model: 'Store'}, 
@@ -234,6 +234,28 @@ router.patch('/', async(req,res) => {
 		console.log('Updating shopping list completed...')
 	}
 
+})
+
+router.delete('/', async (req, res) => {
+	console.log('Removing items from shopping list...')
+	const { targetListId, idsToDelete } = req.body;
+	try{
+		const [ targetList ] = await ShoppingList.find({ _id : targetListId });
+		if(targetList.items.isMongooseArray && idsToDelete.length){
+			idsToDelete.forEach((id) => targetList.items.pull(id));
+		}
+		
+		await targetList.save();
+
+		res.status(200).json({
+			status: 200,
+			message: SuccessMessagesEnum.LIST_ITEM_DELETED,
+		})
+	}catch(error){
+		console.error(error);
+	}finally{
+		console.log('DELETE: /shoppingLists/ completed...')
+	}
 })
 
 module.exports = router;
