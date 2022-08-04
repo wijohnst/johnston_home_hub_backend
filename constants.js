@@ -13,6 +13,10 @@ const HTTPMessagesEnum = Object.freeze({
 			SUCCESS: 'Stores fetched successfully.',
 			FINALLY: 'GET: /shoppingLists/stores completed.'
 		}, 
+		ITEMS_FETCHED: {
+			SUCCESS: 'Shopping list items fetched successfully.',
+			FINALLY: 'GET: /shoppingList/items completed.'
+		}
 });
 
 const ListCategoriesEnum = Object.freeze({

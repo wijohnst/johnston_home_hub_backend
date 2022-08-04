@@ -146,8 +146,20 @@ const getNewItemByCategory = (category, item) => {
 	return newItem;
 }
 
+const getItemModelByCategory = (category) => {
+	switch (category) {
+		case ListCategoriesEnum.GROCERY:
+			return GroceryItem;
+		case ListCategoriesEnum.ONLINE:
+			return OnlineItem;
+		default:
+			return Item;
+	}
+}
+
 module.exports.addNewStore = addNewStore;
 module.exports.addNewAisle = addNewAisle;
 module.exports.getItemInfo = getItemInfo;
 module.exports.getNewListByCategory = getNewShoppingListByCategory;
 module.exports.getNewItemByCategory = getNewItemByCategory;
+module.exports.getItemModelByCategory = getItemModelByCategory;

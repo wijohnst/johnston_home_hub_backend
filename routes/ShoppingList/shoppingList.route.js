@@ -6,11 +6,9 @@ const { HTTPMessagesEnum, ListCategoriesEnum } = require('../../constants');
 
 const router = express.Router();
 
-const { GroceryList, HardwareList, OnlineList, ShoppingList, Store, Aisle } = require('../../models/ShoppingList/shoppingList.model');
+const { GroceryList, HardwareList, OnlineList, ShoppingList, Store, Aisle, Item, GroceryItem, OnlineItem } = require('../../models/ShoppingList/shoppingList.model');
 
-const { Item ,GroceryItem, OnlineItem } = require('../../models/ShoppingList/item.model');;
-
-const { addNewStore, getItemInfo, getNewShoppingListByCategory, getNewItemByCategory, addNewAisle } = require('./shoppingList.route.utils');
+const { addNewStore, getItemInfo, getNewShoppingListByCategory, getNewItemByCategory, addNewAisle, getItemModelByCategory } = require('./shoppingList.route.utils');
 
 router.get('/', async (req, res) => {
 	console.log('Getting all shopping lists...')
@@ -71,6 +69,31 @@ router.get('/stores', async (req, res) => {
 	}finally{
 		console.log(HTTPMessagesEnum.STORES_FETCHED.FINALLY)
 	}
+})
+
+router.get('/items', async (req, res) => {
+	console.log('Getting items...');
+		try {
+			const items = await Item.find();
+			const groceryItems = await GroceryItem.find();
+			const onlineItems = await OnlineItem.find(); 
+			res.status(200).json({
+				status: 200,
+				message: HTTPMessagesEnum.ITEMS_FETCHED.SUCCESS,
+				allItems :{
+					hardware : items.filter((item) => item.category === ListCategoriesEnum.HARDWARE),
+					grocery: groceryItems,
+					online: onlineItems,
+					/* These items may have a category, but that category will be non-standard / custom */
+					uncategorized : items.filter((item) => !Object.values(ListCategoriesEnum).includes(item.category))
+				},
+				totalItems: items.length + groceryItems.length + onlineItems.length,
+			})	
+		} catch (error) {
+			console.error(error);	
+		}finally{
+			console.log(HTTPMessagesEnum.ITEMS_FETCHED.FINALLY)
+		}	
 })
 
 router.post('/', async(req, res) => {
@@ -216,7 +239,6 @@ router.patch('/', async(req,res) => {
 
 	const isGroceryItem = item.category === ListCategoriesEnum.GROCERY;
 	
-	
 	const newStoreId = !hasDbStore ? mongoose.Types.ObjectId() : null;
 	if(!hasDbStore){
 		await addNewStore(newStoreId, item.store.name, item.category);
@@ -233,6 +255,11 @@ router.patch('/', async(req,res) => {
 		newDbItem.store = hasDbStore ? item.store._id : newStoreId;
 		newDbItem.aisle = hasDbAisle ? item.aisle._id : newAisleId;
 		await newDbItem.save();
+	}
+
+	if(isItemInDb){
+		const Model = getItemModelByCategory(item.category);
+		const targetItem = Model.findOneAndUpdate({_id : item._id}, item);
 	}
 
 	try {
