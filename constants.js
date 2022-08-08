@@ -16,6 +16,10 @@ const HTTPMessagesEnum = Object.freeze({
 		ITEMS_FETCHED: {
 			SUCCESS: 'Shopping list items fetched successfully.',
 			FINALLY: 'GET: /shoppingList/items completed.'
+		},
+		ITEM_UPDATED: {
+			SUCCESS: "Item updated successfully.",
+			FINALLY: "PATCH: /shoppingList/item completed."
 		}
 });
 

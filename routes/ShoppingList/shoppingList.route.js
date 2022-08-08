@@ -259,7 +259,7 @@ router.patch('/', async(req,res) => {
 
 	if(isItemInDb){
 		const Model = getItemModelByCategory(item.category);
-		const targetItem = Model.findOneAndUpdate({_id : item._id}, item);
+		await Model.findOneAndUpdate({_id : item._id}, item);
 	}
 
 	try {
@@ -301,4 +301,32 @@ router.delete('/', async (req, res) => {
 	}
 })
 
+router.patch('/item', async (req, res) => {
+	console.log('Updating item details...')
+	const { itemData } = req.body;
+
+	const { hasDbStore, hasDbAisle } = getItemInfo(itemData);
+
+	const newStoreId = !hasDbStore ? mongoose.Types.ObjectId() : null;
+	const newAisleId = !hasDbAisle ? mongoose.Types.ObjectId() : null;
+
+	try{
+		const targetModel = getItemModelByCategory(itemData.category);
+		await targetModel.findOneAndUpdate({_id: itemData._id}, itemData);
+		if(!hasDbStore){
+			await addNewStore(newStoreId, itemData.store.name, itemData.category);
+		}
+		if(!hasDbAisle){
+			await addNewAisle(newAisleId, itemData.aisle.aisle);
+		}
+		res.status(200).json({
+			status: 200,
+			message: HTTPMessagesEnum.ITEM_UPDATED.SUCCESS
+		})
+	}catch(error){
+		console.error(error);
+	}finally{
+		console.log(HTTPMessagesEnum.ITEM_UPDATED.FINALLY)
+	}
+})
 module.exports = router;
