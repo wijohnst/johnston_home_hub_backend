@@ -5,7 +5,7 @@ const mongoString = process.env.DATABASE_URL
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
-const port = 3001
+const localPort = 3001
 
 mongoose.connect(mongoString)
 const database = mongoose.connection
@@ -31,6 +31,6 @@ app.use('/feeder', feederRouter);
 app.use('/chores', choreTrackerRouter);
 app.use('/shoppingList', shoppingListRouter);
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Johnston Home Hub is listening on port ${port}`)
+app.listen(process.env.PORT || localPort, '0.0.0.0', () => {
+    console.log(`Johnston Home Hub is listening on ${process.env.PORT ?? localPort}...`)
 })
