@@ -31,6 +31,6 @@ app.use('/feeder', feederRouter);
 app.use('/chores', choreTrackerRouter);
 app.use('/shoppingList', shoppingListRouter);
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Johnston Home Hub is listening on port ${port}`)
 })
