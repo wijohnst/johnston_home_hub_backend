@@ -11,16 +11,16 @@ const ItemSchema = new Schema({
 	_id: Schema.ObjectId,
 	name: { type: String, required: true},
 	store: { type: Schema.Types.ObjectId, ref: 'Store' },
-	quantity: { type: String, default: "Unknown Quantity"},
+	quantity: { type: String, default: "No Quantity Specified"},
 	category: { type: String, default: "Non-Categorized"}
 });
 
 const GroceryItemSchema = new Schema({
 	_id: Schema.ObjectId,
 	name: { type: String },
-	store: { type: Schema.Types.ObjectId, ref: 'Store' },
+	store: { type: Schema.Types.ObjectId, ref: 'Store'},
 	aisle: { type: Schema.Types.ObjectId, ref: "Aisle"},
-	quantity: { type: String, default: "Not Specified"},
+	quantity: { type: String, default: "No Quantity Specified"},
 	category: { type: String, default: ListCategoriesEnum.GROCERY}
 })
 
@@ -29,7 +29,7 @@ const OnlineItemSchema = new Schema({
 	_id: Schema.ObjectId,
 	name: { type: String, required: true},
 	store: { type: Schema.Types.ObjectId, ref: 'Store' },	
-	quantity: { type: String, default: "?"},
+	quantity: { type: String, default: "No Quantity Specified"},
 	url: { type: String, default: "No link provided"},
 	category: { type: String, default: ListCategoriesEnum.ONLINE}
 });
