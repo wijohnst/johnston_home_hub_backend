@@ -13,6 +13,7 @@ const choreTrackerRouter = require('./routes/ChoreTracker/choreTracker.route')
 const petsRouter = require('./routes/Pets/pets')
 const feederRouter = require('./routes/Feeder/feeder')
 const shoppingListRouter = require('./routes/ShoppingList/shoppingList.route')
+const recipeRouter = require('./routes/Recipe/recipe.route');
 
 database.on('error', (error) => {
     console.log('DB Connection Error', error)
@@ -30,6 +31,7 @@ app.use('/pets', petsRouter);
 app.use('/feeder', feederRouter);
 app.use('/chores', choreTrackerRouter);
 app.use('/shoppingList', shoppingListRouter);
+app.use('/recipe', recipeRouter);
 
 app.listen(process.env.PORT || localPort, '0.0.0.0', () => {
     console.log(`Johnston Home Hub is listening on ${process.env.PORT ?? localPort}...`)
