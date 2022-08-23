@@ -20,6 +20,10 @@ const HTTPMessagesEnum = Object.freeze({
 		ITEM_UPDATED: {
 			SUCCESS: "Item updated successfully.",
 			FINALLY: "PATCH: /shoppingList/item completed."
+		},
+		GENERATE_RECIPE: {
+			SUCCESS: "Recipe generated successfully.",
+			FINALLY: "GET: /recipe/generate completed."
 		}
 });
 
