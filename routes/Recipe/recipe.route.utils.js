@@ -14,10 +14,12 @@ const getHostFromUrl = (url) => {
 const TargetSelectorsMap = Object.freeze({
 	allrecipes: {
 		targetParentClass: {
+			name: undefined,
 			ingredients: ".ingredients-section",
 			steps: ".instructions-section",
 		},
 		targetDomElementClass: {
+			name: ".headline",
 			ingredient: ".ingredients-item-name",
 			step: ".paragraph > p"
 		}

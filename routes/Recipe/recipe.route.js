@@ -17,8 +17,9 @@ router.post('/generate', async (req, res) => {
 		
 		const { data } = await axios(url);	
 		const $ = cheerio.load(data);
+
+		const name = $(targetSelectors.targetDomElementClass.name).text();
 	
-		
 		const ingredientsSection = $(targetSelectors.targetParentClass.ingredients);
 		const ingredients = [];
 
@@ -36,6 +37,7 @@ router.post('/generate', async (req, res) => {
 			status: 200,
 			message: HTTPMessagesEnum.GENERATE_RECIPE.SUCCESS,
 			recipe: {
+				name,
 				ingredients,
 				steps
 			}
