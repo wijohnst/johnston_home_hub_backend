@@ -21,10 +21,14 @@ const HTTPMessagesEnum = Object.freeze({
 			SUCCESS: "Item updated successfully.",
 			FINALLY: "PATCH: /shoppingList/item completed."
 		},
+		ADD_RECIPE: {
+			SUCCESS: "New Recipe created successfully.",
+			FINALLY: "POST: /recipe/ completed."
+		},
 		GENERATE_RECIPE: {
 			SUCCESS: "Recipe generated successfully.",
 			FINALLY: "GET: /recipe/generate completed."
-		}
+		},
 });
 
 const ListCategoriesEnum = Object.freeze({

@@ -100,7 +100,7 @@ router.post('/', async(req, res) => {
 	console.log('Creating a new shopping list...');
 	const { items, category } = req.body;
 	try {
-		const newList = getNewShoppingListByCategory (category);
+		const newList = getNewShoppingListByCategory(category);
 
 		await newList.save(function(err, list) {
 			if (err) return console.error(err); 
