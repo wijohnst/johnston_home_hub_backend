@@ -4,7 +4,8 @@
     "description": "Express Backend for the Johnston Home Hub",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest -config ./jest.config.js",
+        "wtest": "jest --watch",
         "start": "node index.js",
         "start:dev": "nodemon index.js",
         "format:check": "prettier --check .",
@@ -15,16 +16,22 @@
     "author": "@wijohnst",
     "license": "ISC",
     "dependencies": {
+        "axios": "^0.27.2",
+        "cheerio": "^1.0.0-rc.12",
         "cors": "^2.8.5",
         "date-fns": "^2.29.1",
         "dotenv": "^16.0.1",
         "express": "^4.18.1",
-        "mongoose": "^6.4.5"
+        "mongoose": "^6.4.5",
+        "node-fetch": "^3.2.10",
+        "pretty": "^2.0.0"
     },
     "devDependencies": {
         "eslint": "^8.20.0",
         "eslint-config-prettier": "^8.5.0",
+        "jest": "^25.2.2",
         "nodemon": "^2.0.19",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "supertest": "^6.2.4"
     }
 }
