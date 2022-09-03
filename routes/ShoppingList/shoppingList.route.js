@@ -329,4 +329,43 @@ router.patch('/item', async (req, res) => {
 		console.log(HTTPMessagesEnum.ITEM_UPDATED.FINALLY)
 	}
 })
+
+router.post('/groceryItem', async (req, res) => {
+	const { itemData } = req.body;
+
+	const { hasDbStore, hasDbAisle } = getItemInfo(itemData);
+	console.log(itemData, hasDbStore, hasDbAisle);
+
+	const newStoreId = !hasDbStore ? mongoose.Types.ObjectId() : null;
+	const newAisleId = !hasDbAisle ? mongoose.Types.ObjectId() : null;
+
+	const storeData = hasDbStore ? itemData.store : { _id: newStoreId, ...itemData.store};
+	const aisleData = hasDbAisle ? itemData.aisle : { _id: newAisleId, ...itemData.aisle};
+
+	try{
+		const newGroceryItem = new GroceryItem({
+			_id: mongoose.Types.ObjectId(),
+			name: itemData.name,
+			store: storeData,
+			aisle: aisleData,
+			quantity: itemData.quantity,
+		});
+
+		await newGroceryItem.save();
+
+		res.status(200).json({
+			status: 200,
+			message: HTTPMessagesEnum.GROCERY_ITEM_ADDED.SUCCESS
+		})
+	}catch(error){
+		console.error(error);
+
+		res.status(400).json({
+			status: 400,
+			message: error,
+		})
+	}finally{
+		console.log(HTTPMessagesEnum.GROCERY_ITEM_ADDED.FINALLY)
+	}
+})
 module.exports = router;

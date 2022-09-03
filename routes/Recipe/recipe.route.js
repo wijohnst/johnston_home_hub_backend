@@ -101,4 +101,26 @@ router.post('/generate', async (req, res) => {
 	}
 });
 
+router.get('/', async (req, res) => {
+	console.log('Getting recipes...')
+	try{
+		const recipes = await Recipe.find().populate({
+			path: 'ingredients',
+			populate: { path: 'linkedItem'}
+		});
+		res.status(200).json({
+			status: 200,
+			message: HTTPMessagesEnum.RECIPES_FETCHED.SUCCESS,
+			recipes,
+		})
+	}catch(error){
+		res.status(400).json({
+			status: 400,
+			message: error,
+		})
+	}finally{
+		console.log(HTTPMessagesEnum.RECIPES_FETCHED.FINALLY)
+	}
+})
+
 module.exports = router;
