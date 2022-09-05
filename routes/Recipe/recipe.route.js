@@ -121,6 +121,29 @@ router.get('/', async (req, res) => {
 	}finally{
 		console.log(HTTPMessagesEnum.RECIPES_FETCHED.FINALLY)
 	}
+});
+
+router.patch('/', async (req, res) => {
+	console.log('Patching recipe...');
+
+	const { recipeToUpdate } = req.body;
+
+	try {
+		const targetRecipe = await Recipe.findOneAndUpdate({_id: recipeToUpdate._id}, recipeToUpdate);
+		
+		console.log(targetRecipe);
+		res.status(200).json({
+			status: 200,
+			message: HTTPMessagesEnum.RECIPE_UPDATED.SUCCESS,
+		})
+	}catch(error){
+		res.status(400).json({
+			status: 400,
+			message: error,
+		})
+	}finally{
+		console.log(HTTPMessagesEnum.RECIPE_UPDATED.FINALLY)
+	}
 })
 
 module.exports = router;
