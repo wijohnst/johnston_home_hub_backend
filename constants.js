@@ -36,6 +36,10 @@ const HTTPMessagesEnum = Object.freeze({
 		RECIPES_FETCHED: {
 			SUCCESS: "Recipes fetched successfully.",
 			FINALLY: "GET: /recipes/ completed."
+		},
+		RECIPE_UPDATED: {
+			SUCCESS: "Recipe updated successfully.",
+			FINALLY: "PATCH: /recipes/ completed."
 		}
 });
 
