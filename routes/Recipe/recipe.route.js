@@ -129,12 +129,13 @@ router.patch('/', async (req, res) => {
 	const { recipeToUpdate } = req.body;
 
 	try {
-		const targetRecipe = await Recipe.findOneAndUpdate({_id: recipeToUpdate._id}, recipeToUpdate);
+		// {new : true } will reuturn updated recipe document
+		const updatedTargetRecipe = await Recipe.findOneAndUpdate({_id: recipeToUpdate._id}, recipeToUpdate, { new: true });
 		
-		console.log(targetRecipe);
 		res.status(200).json({
 			status: 200,
 			message: HTTPMessagesEnum.RECIPE_UPDATED.SUCCESS,
+			updatedRecipe: updatedTargetRecipe,
 		})
 	}catch(error){
 		res.status(400).json({
