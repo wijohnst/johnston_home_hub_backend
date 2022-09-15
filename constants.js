@@ -40,6 +40,10 @@ const HTTPMessagesEnum = Object.freeze({
 		RECIPE_UPDATED: {
 			SUCCESS: "Recipe updated successfully.",
 			FINALLY: "PATCH: /recipes/ completed."
+		},
+		RECIPE_DELETED: {
+			SUCCESS: "Recipe successfulyl deleted.",
+			FINALLY: "DELETE: /recipe/ completed."
 		}
 });
 

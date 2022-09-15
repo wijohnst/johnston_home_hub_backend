@@ -147,4 +147,26 @@ router.patch('/', async (req, res) => {
 	}
 })
 
+router.delete('/', async (req, res) => {
+	console.log('Deleting recipe...');
+
+	const { recipeIdToDelete } = req.body;
+
+		try {
+			await Recipe.findOneAndDelete({_id: recipeIdToDelete});
+
+			res.status(200).json({
+				status: 200,
+				message: HTTPMessagesEnum.RECIPE_DELETED.SUCCESS,
+			})
+		} catch (error) {
+			res.status(400).json({
+				status: 400,
+				message: error
+			})
+		}finally{
+			console.log(HTTPMessagesEnum.RECIPE_DELETED.FINALLY)
+		}
+})
+
 module.exports = router;
