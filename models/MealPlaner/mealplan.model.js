@@ -13,6 +13,13 @@ const MealTypes = Object.freeze({
 	SNACK: { text: "snack", value: 3}, 
 }); 
 
+const EmptyMeals = Object.freeze({
+	[MealTypes.BREAKFAST.text] : [],
+	[MealTypes.LUNCH.text]: [],
+	[MealTypes.DINNER.text]: [],
+	[MealTypes.SNACK.text]: [],
+})
+
 const MealSchema = new Schema({
 	_id: Schema.ObjectId,
 	date: {type: Date, required: true}, 
@@ -33,4 +40,4 @@ const LockedRecipe = mongoose.model('LockedRecipe', LockedRecipeSchema);
 module.exports.Meal = Meal;
 module.exports.MealTypes = MealTypes;
 module.exports.LockedRecipe = LockedRecipe;
-
+module.exports.EmptyMeals = EmptyMeals;
