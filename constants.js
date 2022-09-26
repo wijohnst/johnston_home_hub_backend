@@ -44,6 +44,10 @@ const HTTPMessagesEnum = Object.freeze({
 		RECIPE_DELETED: {
 			SUCCESS: "Recipe successfulyl deleted.",
 			FINALLY: "DELETE: /recipe/ completed."
+		},
+		MEALS_FETCHED: {
+			SUCCESS: "Meals fetched successfully.",
+			FINALLY: "GET: /meal_plan/ completed."
 		}
 });
 
@@ -53,5 +57,10 @@ const ListCategoriesEnum = Object.freeze({
 	ONLINE : "Online",
 });
 
+const DateFormats = Object.freeze({
+	CALENDAR_DATE : "L/d/y",
+})
+
 module.exports.HTTPMessagesEnum = HTTPMessagesEnum;
 module.exports.ListCategoriesEnum = ListCategoriesEnum;
+module.exports.DateFormats = DateFormats;
