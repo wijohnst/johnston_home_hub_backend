@@ -48,6 +48,10 @@ const HTTPMessagesEnum = Object.freeze({
 		MEALS_FETCHED: {
 			SUCCESS: "Meals fetched successfully.",
 			FINALLY: "GET: /meal_plan/ completed."
+		},
+		MEAL_UPDATED: {
+			SUCCESS: "Meal updated successfully."	,
+			FINALLY: "PATCH: /meal_plan/meal completed."
 		}
 });
 

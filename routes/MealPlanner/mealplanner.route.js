@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 
@@ -75,13 +76,12 @@ router.get('/', async (_req, res) => {
 		}finally{
 			console.log(HTTPMessagesEnum.MEALS_FETCHED.FINALLY)
 		}
-	/*
-		mealPlans = {
-			[key : SimplifiedDate] : Meals[]
-		}
-	*/
 })
 
+/*
+	! DELETES ALL MEAL DOCUMENTS !
+	! USE WITH CAUTION !
+ */
 router.delete('/all', async (_req, res) => {
 		try {
 			await Meal.deleteMany({});
@@ -98,7 +98,51 @@ router.delete('/all', async (_req, res) => {
 				message: "Something went wrong."
 			})
 		}
+});
+
+router.patch('/meal', async (req, res) => {
+/*
+	This endpoint updates a given Meal, specifically updating the associated `Recipes` array 
 	
+	* req.body = {
+	* 	updatedMeal: Meal
+	* }
+
+	
+	use `findOneAndUpdate({_id: updatedMeal._id})
+
+*/
+
+const { updatedMeal } = req.body;
+
+	try {
+	const targetMeal = await Meal.findById(updatedMeal._id);
+		
+	const newRecipeIds = updatedMeal.recipes.filter((recipeId) => !targetMeal.recipes.includes(recipeId));
+
+	if(newRecipeIds.length){
+		console.log("Adding updated recipe Ids...")
+
+		newRecipeIds.forEach(recipeId => targetMeal.recipes.push(new mongoose.Types.ObjectId(recipeId)));
+
+		await targetMeal.save();
+	}
+
+
+	 res.status(200).json({
+		status: 200,
+		message: HTTPMessagesEnum.MEAL_UPDATED.SUCCESS
+	 })
+	} catch (error) {
+		res.status(400).json({
+			status: 200,
+			message: error,
+		})
+	}finally{
+		console.log(HTTPMessagesEnum.MEAL_UPDATED.FINALLY)
+	}
 })
+
+
 
 module.exports = router;
