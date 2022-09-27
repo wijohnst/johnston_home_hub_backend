@@ -33,6 +33,7 @@ const Meal = mongoose.model('Meal', MealSchema);
 const LockedRecipeSchema = new Schema({
 	_id: Schema.ObjectId,
 	recipeId: { type: Schema.Types.ObjectId, ref: "Recipe", required: true },
+	mealType: {type: String, required: true},
 	daysLocked: [{type: Number}],
 });
 

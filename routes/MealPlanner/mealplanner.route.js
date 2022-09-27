@@ -143,7 +143,7 @@ const { updatedMeal } = req.body;
 	}
 });
 
-router.get('/locked_recipes', async (req,res) => {
+router.get('/locked_recipes', async (_req,res) => {
 	console.log('Getting locked recipes...');
 		try {
 			const lockedRecipes = await LockedRecipe.find({});
@@ -159,6 +159,53 @@ router.get('/locked_recipes', async (req,res) => {
 			})
 		}finally{
 			console.log(HTTPMessagesEnum.LOCKED_RECIPES_FETCHED.FINALLY)
+		}
+});
+
+// eslint-disable-next-line no-unused-vars
+router.post('/locked_recipes', async (req, res) => {
+	/*
+		Accepts a `lockedRecipe` request:
+
+		req.body = {
+			...,
+			lockedRecipe: {
+				recipeId: string,
+				mealType: MealType,
+				daysLocked: number[],
+			}
+		}
+
+		A new `LockedRecipe` document is created based on this data. 
+		
+		! ON REDUNDANT DOCUMENTS !
+
+		It does not matter if another `LockedRecipe` exists with the same `recipeId`. You may have a recipe locked for breakfast on days `[0,2]` and the same recipe locked for lunch on days `[1,4]`. We want to allow this. 
+	*/
+	console.log('Posting locked recipe...');
+		try {
+			const { lockedRecipe : { recipeId, mealType, daysLocked} } = req.body;	
+
+			await new LockedRecipe({
+				_id: mongoose.Types.ObjectId(),
+				recipeId: mongoose.Types.ObjectId(recipeId),
+				mealType,
+				daysLocked,
+			}).save();
+
+			res.status(200).json({
+				status: 200,
+				message: HTTPMessagesEnum.LOCKED_RECIPE_POSTED.SUCCESS,
+			});
+
+		} catch (error) {
+			console.log(error.message)
+			res.status(400).json({
+				status: 400,
+				message: error.message,
+			})
+		}finally{
+			console.log(HTTPMessagesEnum.LOCKED_RECIPE_POSTED.FINALLY);
 		}
 })
 
