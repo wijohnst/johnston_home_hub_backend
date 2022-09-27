@@ -57,6 +57,10 @@ const HTTPMessagesEnum = Object.freeze({
 			SUCCESS: "Locked Recipes fetched successfully.",
 			FINALLY: "GET: /meals/locked_recipes/ completed."
 		},
+		LOCKED_RECIPE_POSTED: {
+			SUCCESS: "Locked Recipe posted successfully.",
+			FINALLY: "POST: /meal_plan/locked_recipes/ completed." 
+		}
 
 });
 
