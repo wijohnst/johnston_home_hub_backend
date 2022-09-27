@@ -52,7 +52,12 @@ const HTTPMessagesEnum = Object.freeze({
 		MEAL_UPDATED: {
 			SUCCESS: "Meal updated successfully."	,
 			FINALLY: "PATCH: /meal_plan/meal completed."
-		}
+		},
+		LOCKED_RECIPES_FETCHED: {
+			SUCCESS: "Locked Recipes fetched successfully.",
+			FINALLY: "GET: /meals/locked_recipes/ completed."
+		},
+
 });
 
 const ListCategoriesEnum = Object.freeze({

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-const { MealTypes, Meal } = require('../../models/MealPlaner/mealplan.model');
+const { MealTypes, Meal, LockedRecipe } = require('../../models/MealPlaner/mealplan.model');
 const { generateTargetMeal, getMealPlanDates } = require('./mealplanner.utils.route');
 const { HTTPMessagesEnum } = require("../../constants")
 
@@ -141,8 +141,25 @@ const { updatedMeal } = req.body;
 	}finally{
 		console.log(HTTPMessagesEnum.MEAL_UPDATED.FINALLY)
 	}
+});
+
+router.get('/locked_recipes', async (req,res) => {
+	console.log('Getting locked recipes...');
+		try {
+			const lockedRecipes = await LockedRecipe.find({});
+			res.status(200).json({
+				status: 200,
+				message: HTTPMessagesEnum.LOCKED_RECIPES_FETCHED.SUCCESS,
+				lockedRecipes,
+			})
+		} catch (error) {
+			res.status(400).json({
+				status: 400,
+				message: error,
+			})
+		}finally{
+			console.log(HTTPMessagesEnum.LOCKED_RECIPES_FETCHED.FINALLY)
+		}
 })
-
-
 
 module.exports = router;
