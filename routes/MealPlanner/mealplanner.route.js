@@ -207,6 +207,38 @@ router.post('/locked_recipes', async (req, res) => {
 		}finally{
 			console.log(HTTPMessagesEnum.LOCKED_RECIPE_POSTED.FINALLY);
 		}
+});
+
+// eslint-disable-next-line no-unused-vars
+router.delete('/locked_recipes', async (req, res) => {
+	console.log("Deleteing Locked Recipe...");
+		try {
+			const { lockedRecipeIdToDelete } = req.body;	
+			const query = { _id: lockedRecipeIdToDelete };
+
+			LockedRecipe.findOneAndDelete(query, (error) => {
+				if(error){
+					console.log("LockedRecipe was not deleted.", error)
+					res.status(400).json({
+						status: 400,
+						message: error.message
+					});
+				}else{
+					res.status(200).json({
+						status: 200,
+						message: HTTPMessagesEnum.LOCKED_RECIPE_DELETED.SUCCESS,
+					})
+				}
+			}) 
+		} catch (error) {
+			console.error(error);	
+			res.status(400).json({
+				status: 400,
+				message: error.message,
+			})
+		}finally{
+			console.log(HTTPMessagesEnum.LOCKED_RECIPE_DELETED.FINALLY)
+		}
 })
 
 module.exports = router;
