@@ -209,7 +209,6 @@ router.post('/locked_recipes', async (req, res) => {
 		}
 });
 
-// eslint-disable-next-line no-unused-vars
 router.delete('/locked_recipes', async (req, res) => {
 	console.log("Deleteing Locked Recipe...");
 		try {
