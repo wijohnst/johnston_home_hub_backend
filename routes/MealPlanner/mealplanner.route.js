@@ -11,67 +11,56 @@ router.get('/', async (_req, res) => {
 	console.log('Getting meal plans...');
 
 	/*
-		* Starting with today's date, return the `MealPlan` associated with the current data as well as the consecutive 6 dates: 
+		! WHAT DO YOU WANT TO RETURN:
 
-		type MealPlan:
 		{
-			date: Date,
-			meals: {
-				BREAKFAST: Recipe[],
-				LUNCH: Recipe[],
-				DINNER: Recipe[],
-				SNACK: Recipe[],
+			10/6/2022 : {
+				BREAKFAST : MealPlan,
+				LUNCH: MealPlan,
+				DINNER: MealPlan,
+				SNACK: MealPlan,	
 			},
-			linkedRecipeIds: string[],
+			... other dates
 		}
-
-		return type MealPlans = MealPlan[]
-
-		! If there is not a given `Meal` (BREAKFAST, LUNCH, DINNER, SNACK) associated with a date (Meal.findOne({date: targetDate, mealType: targetMealType}) === null), create a new `MealPlan` 
-
-		new Meal({
-			_id: ...,
-			* index value === 0 - 6 *
-			date: new Date(deriveNormalizedDateFromValue(index)),
-			mealType: targetMealType,
-			* a new `Meal` should have [0] recipes *
-			recipes: [],
-		})
-
-		outer iteration: DATES [0 - 6]
-			innter iteration: MEALS [0 - 4]
-
 	*/
-	
 	const now = new Date();
 	const mealPlanDates = getMealPlanDates(now);
 	const mealTypes = Object.values(MealTypes);
 	
 		try {
-			const mealPlans = await Promise.all(mealPlanDates.map(async (simplifiedTargetDate) => {
-				const mealsByType = await Promise.all(mealTypes.map(async (mealType) => {
+			// Returns a nested object => { [key : simplifiedDate] : MealPlan[] }
+			const mealPlans = mealPlanDates.reduce(async (acc, simplifiedTargetDate) => {
+			// const mealPlans = await Promise.all(mealPlanDates.reduce(async (acc, simplifiedTargetDate) => {
+				// For each simplified date in `mealPlanDates`, iterate over the meal types (BREAKFAST, LUNCH, DINNER, SNACK) 
+				const mealsByType = await Promise.all((mealTypes.map(async (mealType) => {
+				// const mealsByType = await Promise.all((mealTypes.map(async (mealType) => {
 					const targetMealType = mealType.text;
-					
-					const targetMeals = await Meal.find({ date: simplifiedTargetDate, mealType: targetMealType });			
-					if(targetMeals.length > 0 ){
-						return targetMeals
+					// Try to find a meal of the given type for the given date :  e.g.: 'Is there a breakfast schedulded for 10/6/2022?'
+					const targetMeal = await Meal.findOne({date: simplifiedTargetDate, mealType: targetMealType}).populate({path: 'recipes', select: '_id name'});
+					//If you find that meal, return it
+					if(targetMeal){
+						return targetMeal
+					// If you don't, create a new "empty" meal and return that. 
 					}else{
+						// An "empty" meal is a MealPlan object with an empty `recipes` array
 						const newMeal = generateTargetMeal(targetMealType, simplifiedTargetDate);
 						return newMeal;
 					}
-				}))
-				return { [simplifiedTargetDate] : mealsByType}
-			}));
+				})))
+				
+				// return {...await acc, [simplifiedTargetDate]: mealsByType}
+				return {...await acc, [simplifiedTargetDate]: mealsByType}
+			},{})
 
 			res.status(200).json({
 				status: 200,
 				message: HTTPMessagesEnum.MEALS_FETCHED.SUCCESS,
-				mealPlans,
+				mealPlans: await mealPlans,
 			})
 		} catch (error) {
 			res.status(400).json({
 				status: 400,
-				message: error,
+				message: error.message,
 			})
 		}finally{
 			console.log(HTTPMessagesEnum.MEALS_FETCHED.FINALLY)
