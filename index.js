@@ -7,8 +7,8 @@ const mongoose = require('mongoose')
 const app = express()
 const localPort = 3001
 
-mongoose.connect(mongoString)
-const database = mongoose.connection
+// mongoose.connect(mongoString)
+// const database = mongoose.connection
 const choreTrackerRouter = require('./routes/ChoreTracker/choreTracker.route')
 const petsRouter = require('./routes/Pets/pets')
 const feederRouter = require('./routes/Feeder/feeder')
@@ -16,13 +16,13 @@ const shoppingListRouter = require('./routes/ShoppingList/shoppingList.route')
 const recipeRouter = require('./routes/Recipe/recipe.route');
 const mealPlannerRouter = require('./routes/MealPlanner/mealplanner.route');
 
-database.on('error', (error) => {
-    console.log('DB Connection Error', error)
-})
+// database.on('error', (error) => {
+//     console.log('DB Connection Error', error)
+// })
 
-database.once('connected', async () => {
-    console.log('Successfully connected to MongoDB...')
-})
+// database.once('connected', async () => {
+//     console.log('Successfully connected to MongoDB...')
+// })
 
 app.use(cors())
 app.use(express.json())
