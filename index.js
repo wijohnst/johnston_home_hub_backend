@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 const app = express()
 const localPort = 3001
 
-mongoose.connect(mongoString)
+mongoose.connect(mongoString) 
 const database = mongoose.connection
 const choreTrackerRouter = require('./routes/ChoreTracker/choreTracker.route')
 const petsRouter = require('./routes/Pets/pets')
