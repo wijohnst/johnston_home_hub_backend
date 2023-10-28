@@ -18,7 +18,7 @@ const Schema = mongoose.Schema;
 
 const AisleSchema = new Schema({
 	_id: Schema.ObjectId,
-	aisle: { type : String, default: "Miscelaneous"}
+	aisle: { type : String, default: "Miscellaneous"}
 });
 
 module.exports.AisleSchema = AisleSchema;

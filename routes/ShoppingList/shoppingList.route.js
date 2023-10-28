@@ -304,15 +304,21 @@ router.delete('/', async (req, res) => {
 router.patch('/item', async (req, res) => {
 	console.log('Updating item details...')
 	const { itemData } = req.body;
+        console.log(itemData)
 
+        
+        
+        
 	const { hasDbStore, hasDbAisle } = getItemInfo(itemData);
-
+        
 	const newStoreId = !hasDbStore ? mongoose.Types.ObjectId() : null;
 	const newAisleId = !hasDbAisle ? mongoose.Types.ObjectId() : null;
 
+        const targetAisle = await Aisle.findOne({ aisle: itemData.aisle.aisle });
+        
 	try{
 		const targetModel = getItemModelByCategory(itemData.category);
-		await targetModel.findOneAndUpdate({_id: itemData._id}, itemData);
+		await targetModel.findOneAndUpdate({_id: itemData._id}, {...itemData, aisle: targetAisle});
 		if(!hasDbStore){
 			await addNewStore(newStoreId, itemData.store.name, itemData.category);
 		}
@@ -325,6 +331,10 @@ router.patch('/item', async (req, res) => {
 		})
 	}catch(error){
 		console.error(error);
+                res.status(400).json({
+                        status: 400,
+                        message: error.message
+                })
 	}finally{
 		console.log(HTTPMessagesEnum.ITEM_UPDATED.FINALLY)
 	}
