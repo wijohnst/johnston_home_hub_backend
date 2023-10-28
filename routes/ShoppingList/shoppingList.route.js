@@ -302,12 +302,8 @@ router.delete('/', async (req, res) => {
 })
 
 router.patch('/item', async (req, res) => {
-	console.log('Updating item details...')
+	console.info('Updating item details...')
 	const { itemData } = req.body;
-        console.log(itemData)
-
-        
-        
         
 	const { hasDbStore, hasDbAisle } = getItemInfo(itemData);
         
